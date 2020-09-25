@@ -13,6 +13,7 @@ set( subdirs
      meshUtilities
      mpiCommunications
      physicsSolvers
+     python
      )
 
 
@@ -29,12 +30,8 @@ endif()
 list( APPEND coreLibs lvarray)
 add_subdirectory(LvArray)
 
-if( ENABLE_PYTHON )
-  list( APPEND coreLibs pylvarray )
-endif()
-
 foreach( lib ${subdirs} )
-    if( NOT ${lib} STREQUAL "math" )
+    if( NOT ( ${lib} STREQUAL "math" OR ${lib} STREQUAL "python" ) )
       list( APPEND coreLibs ${lib})
     endif()
 endforeach()
@@ -51,7 +48,11 @@ foreach( lib ${subdirs} )
     add_subdirectory(${lib})
 endforeach()
 
+# Python config
 set( extraComponentsLinkList "" )
+#if( ENABLE_PYTHON )
+#  set( extraComponentsLinkList ${extraComponentsLinkList} python_interp )
+#endif()
 
 if ( ENABLE_OPENMP )
   set( extraComponentsLinkList ${extraComponentsLinkList} openmp )
